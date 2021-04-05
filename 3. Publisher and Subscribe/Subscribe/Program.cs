@@ -14,12 +14,12 @@ namespace RabbitMQ.Examples
 
         static void Main()
         {
-            _factory = new ConnectionFactory { HostName = "localhost", UserName = "guest", Password = "guest" };
-            using IConnection _connection = _factory.CreateConnection();
-            using var channel = _connection.CreateModel();
-
             try
             {
+                _factory = new ConnectionFactory { HostName = "localhost", UserName = "guest", Password = "guest" };
+                using IConnection _connection = _factory.CreateConnection();
+                using var channel = _connection.CreateModel();
+
                 var queueName = DeclareAndBindQueueToExchange(channel);
                 channel.BasicConsume(queueName, true, _consumer);
 

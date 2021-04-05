@@ -67,7 +67,7 @@ namespace RabbitMQ.Examples
 
             // Recebe mensagem como objeto do tipo                
             //var message = (Payment)consumer.Model.Queue.Dequeue().Body.DeSerialize(typeof(Payment));        
-            Payment message = new Payment();              
+            Payment message = new();              
 
             // Dizendo para o servidor que queremos menasgens da fila
             consumer.Received += (model, ea) =>
