@@ -8,8 +8,7 @@ namespace RabbitMQ.Examples
     public class Program
     {
         private static ConnectionFactory _factory;
-        private static IConnection _connection;
-        
+        //private static IConnection _connection;        
         private const string QueueName = "WorkerQueue_Queue";
 
         static void Main()
@@ -24,7 +23,7 @@ namespace RabbitMQ.Examples
             {
                 // Criando conexão
                 _factory = new ConnectionFactory { HostName = "localhost", UserName = "guest", Password = "guest" };
-                _connection = _factory.CreateConnection();                
+                using IConnection _connection = _factory.CreateConnection();                
                 var channel = _connection.CreateModel();  
 
                 channel.QueueDeclare(queue: QueueName, 
