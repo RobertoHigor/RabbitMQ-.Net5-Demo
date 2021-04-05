@@ -1,19 +1,43 @@
 {
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (console)",
+            "name": "WorkerQueue Producer",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/StandardQueue/bin/Debug/net5.0/StandardQueue.dll",
+            "program": "${workspaceFolder}/2. WorkerQueue/WorkerQueue Producer/bin/Debug/.net5.0/WorkerQueue Producer.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/StandardQueue",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+
+        {
+            "name": "WorkerQueue Consumer",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/2. Worker Queue/WorkerQueue Consumer/bin/Debug/net5.0/WorkerQueue Consumer.dll",
+            
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        
+        
+        {
+            "name": "StandardQueue",
+            "type": "coreclr",
+            "request": "launch",            
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/1. StandardQueue/bin/Debug/net5.0/StandardQueue.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopAtEntry": false
         },

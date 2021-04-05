@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -68,8 +66,7 @@ namespace RabbitMQ.Examples
             var msgCount = GetMessageCount(_model, QueueName);         
 
             // Recebe mensagem como objeto do tipo                
-            //var message = (Payment)consumer.Model.Queue.Dequeue().Body.DeSerialize(typeof(Payment));
-            var utf8 = Encoding.UTF8;
+            //var message = (Payment)consumer.Model.Queue.Dequeue().Body.DeSerialize(typeof(Payment));        
             Payment message = new Payment();              
 
             // Dizendo para o servidor que queremos menasgens da fila

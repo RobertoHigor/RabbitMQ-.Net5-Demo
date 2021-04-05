@@ -5,9 +5,13 @@ VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{D9800282-12DF-4DF8-BCD9-F2EE0BBA24F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardQueue", "StandardQueue\StandardQueue.csproj", "{4B1EA1FB-FC5C-4994-AAAD-4CAF917BA6A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardQueue", "1. StandardQueue\StandardQueue.csproj", "{4B1EA1FB-FC5C-4994-AAAD-4CAF917BA6A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerQueue", "WorkerQueue\WorkerQueue.csproj", "{C57CB053-6AE3-4AA5-95B3-365FEBA34E71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerQueue Consumer", "WorkerQueue Consumer\WorkerQueue Consumer.csproj", "{C57CB053-6AE3-4AA5-95B3-365FEBA34E71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Worker Queue", "2. Worker Queue", "{BA9D00C1-A742-4F82-A1E2-5033B537B264}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerQueue Producer", "2. Worker Queue\WorkerQueue Producer\WorkerQueue Producer.csproj", "{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,5 +62,20 @@ Global
 		{C57CB053-6AE3-4AA5-95B3-365FEBA34E71}.Release|x64.Build.0 = Release|Any CPU
 		{C57CB053-6AE3-4AA5-95B3-365FEBA34E71}.Release|x86.ActiveCfg = Release|Any CPU
 		{C57CB053-6AE3-4AA5-95B3-365FEBA34E71}.Release|x86.Build.0 = Release|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Debug|x64.Build.0 = Debug|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Debug|x86.Build.0 = Debug|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Release|x64.ActiveCfg = Release|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Release|x64.Build.0 = Release|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Release|x86.ActiveCfg = Release|Any CPU
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CEE6D81B-DC60-4B37-A6C1-68CC78F4B744} = {BA9D00C1-A742-4F82-A1E2-5033B537B264}
 	EndGlobalSection
 EndGlobal
