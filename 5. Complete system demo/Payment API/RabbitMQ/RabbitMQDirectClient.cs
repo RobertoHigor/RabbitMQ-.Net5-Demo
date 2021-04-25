@@ -2,6 +2,7 @@
 using System.Text;
 using Payments.Models;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace Payments.RabbitMQ
 {
@@ -10,7 +11,7 @@ namespace Payments.RabbitMQ
         private IConnection _connection;
         private IModel _channel;
         private string _replyQueueName;
-        private QueueingBasicConsumer _consumer;
+        private EventingBasicConsumer _consumer;
 
         public void CreateConnection()
         {
@@ -20,7 +21,7 @@ namespace Payments.RabbitMQ
 
             _replyQueueName = _channel.QueueDeclare("rpc_reply", true, false, false, null);           
 
-            _consumer = new QueueingBasicConsumer(_channel);
+            _consumer = new EventingBasicConsumer(_channel);
             _channel.BasicConsume(_replyQueueName, true, _consumer);
         }
 
@@ -36,17 +37,18 @@ namespace Payments.RabbitMQ
             props.ReplyTo = _replyQueueName;
             props.CorrelationId = corrId;
 
-            _channel.BasicPublish("", "rpc_queue", props, payment.Serialize());
+            _channel.BasicPublish("", "rpc_queue", props, payment.Serialize()); 
+            string authCode = "";
 
-            while (true)
+            _consumer.Received += (model, ea) => // suporta async
             {
-                var ea = _consumer.Queue.Dequeue();
+                if (ea.BasicProperties.CorrelationId != corrId) 
+                    Console.WriteLine($"If de corrid: {corrId}");              
+                var body = ea.Body.ToArray();
+                authCode = Encoding.UTF8.GetString(body);                
+            };  
 
-                if (ea.BasicProperties.CorrelationId != corrId) continue;
-
-                var authCode = Encoding.UTF8.GetString(ea.Body);                    
-                return authCode;
-            }
+            return authCode;
         }
     }
 }
