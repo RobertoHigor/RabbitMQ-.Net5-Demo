@@ -1,21 +1,20 @@
 ﻿using System;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitMQ.Client.MessagePatterns;
 
 namespace PurchaseOrderConsumer.RabbitMQ
 {
     public class RabbitMQConsumer
     {
         private static ConnectionFactory _factory;
-        private static IConnection _connection;        
+        private static IConnection _connection;
 
         private const string ExchangeName = "Topic_Exchange";
         private const string PurchaseOrderQueueName = "PurchaseOrderTopic_Queue";
 
         public void CreateConnection()
         {
-            _factory = new ConnectionFactory { HostName = "localhost", UserName = "guest", Password = "guest" };            
+            _factory = new ConnectionFactory { HostName = "localhost", UserName = "guest", Password = "guest" };
         }
 
         public void Close()
@@ -32,24 +31,29 @@ namespace PurchaseOrderConsumer.RabbitMQ
                     Console.WriteLine("Listening for Topic <payment.purchaseorder>");
                     Console.WriteLine("------------------------------------------");
                     Console.WriteLine();
-                    
+
                     channel.ExchangeDeclare(ExchangeName, "topic");
                     channel.QueueDeclare(PurchaseOrderQueueName, true, false, false, null);
                     channel.QueueBind(PurchaseOrderQueueName, ExchangeName, "payment.purchaseorder");
 
                     channel.BasicQos(0, 10, false);
-                    Subscription subscription = new Subscription(channel, PurchaseOrderQueueName, false);
-                    
-                    while (true)
+
+                    // Outra forma seria com DefaultBasicConsumer
+                    //var subscription = new EventingBasicConsumer(channel);
+                    var consumer = new EventingBasicConsumer(channel);
+           
+                    consumer.Received += (model, ea) => // suporta async
                     {
-                        BasicDeliverEventArgs deliveryArguments = subscription.Next();
+                        var body = ea.Body.ToArray();
+                        System.Console.WriteLine("DeSerializando a mensagem");
+                        var message = (PurchaseOrder)body.DeSerialize(typeof(PurchaseOrder));
+                        var routingKey = ea.RoutingKey;
+                        Console.WriteLine($"----- Payment - Routing Key<{routingKey}> :{message.AmountToPay} : {message.PoNumber} : {message.CompanyName} : {message.PaymentDayTerms}");
+                        channel.BasicAck(ea.DeliveryTag, false);
+                    };
 
-                        var message = (PurchaseOrder)deliveryArguments.Body.DeSerialize(typeof(PurchaseOrder));
-                        var routingKey = deliveryArguments.RoutingKey;
-
-                        Console.WriteLine("-- Purchase Order - Routing Key <{0}> : {1}, £{2}, {3}, {4}", routingKey, message.CompanyName, message.AmountToPay, message.PaymentDayTerms, message.PoNumber);
-                        subscription.Ack(deliveryArguments);
-                    }
+                    channel.BasicConsume(PurchaseOrderQueueName, autoAck: false, consumer);
+                    Console.ReadLine();
                 }
             }
         }
