@@ -9,7 +9,7 @@ namespace Payment_API.Controllers
     public class DirectCardPaymentController : ControllerBase
     {
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult MakePayment([FromBody] CardPayment payment)
         {
             string reply;

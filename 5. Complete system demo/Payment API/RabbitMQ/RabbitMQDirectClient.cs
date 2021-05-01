@@ -39,7 +39,7 @@ namespace Payments.RabbitMQ
 
             _channel.BasicPublish("", "rpc_queue", props, payment.Serialize()); 
             string authCode = "";
-
+            // TODO: Consertar mudança para EventingBasic
             _consumer.Received += (model, ea) => // suporta async
             {
                 if (ea.BasicProperties.CorrelationId != corrId) 

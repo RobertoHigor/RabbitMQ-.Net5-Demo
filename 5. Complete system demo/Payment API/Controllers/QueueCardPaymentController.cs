@@ -9,12 +9,12 @@ namespace Payment_API.Controllers
     public class QueueCardPaymentController : ControllerBase
     {
        
-        [HttpGet]
+        [HttpPost]
         public IActionResult MakePayment([FromBody] CardPayment payment)
         {     
             try
             {
-                RabbitMQClient client = new RabbitMQClient();
+                RabbitMQClient client = new();
                 client.SendPayment(payment);
                 client.Close();
             }

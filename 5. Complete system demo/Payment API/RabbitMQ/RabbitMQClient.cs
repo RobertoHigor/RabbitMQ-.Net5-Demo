@@ -36,6 +36,7 @@ namespace Payments.RabbitMQ
             _model.QueueDeclare(PurchaseOrderQueueName, true, false, false, null);
             _model.QueueDeclare(AllQueueName, true, false, false, null);
 
+            // Lignado filas a um tópico. Payment.* recebe mensagem de ambas as filas
             _model.QueueBind(CardPaymentQueueName, ExchangeName, "payment.card");
             _model.QueueBind(PurchaseOrderQueueName, ExchangeName, 
                 "payment.purchaseorder");
@@ -51,17 +52,15 @@ namespace Payments.RabbitMQ
         public void SendPayment(CardPayment payment)
         {
             SendMessage(payment.Serialize(), "payment.card");
-            Console.WriteLine(" Payment Sent {0}, £{1}", payment.CardNumber, 
-                payment.Amount);
+            Console.WriteLine($" Payment Sent {payment.CardNumber}, £{payment.Amount}");
         }
 
         public void SendPurchaseOrder(PurchaseOrder purchaseOrder)
         {
             SendMessage(purchaseOrder.Serialize(), "payment.purchaseorder");
 
-            Console.WriteLine(" Purchase Order Sent {0}, £{1}, {2}, {3}", 
-                purchaseOrder.CompanyName, purchaseOrder.AmountToPay, 
-                purchaseOrder.PaymentDayTerms, purchaseOrder.PoNumber);
+            Console.WriteLine($" Purchase Order Sent {purchaseOrder.CompanyName}, £{purchaseOrder.AmountToPay},"+
+            $"{purchaseOrder.PaymentDayTerms}, {purchaseOrder.PoNumber}");
         }
 
         public void SendMessage(byte[] message, string routingKey)

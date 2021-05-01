@@ -10,7 +10,7 @@ namespace Payment_API.Controllers
     public class QueuePurchaseOrderController : ControllerBase
     {
        
-        [HttpGet]
+        [HttpPost]
         public IActionResult MakePayment([FromBody] PurchaseOrder purchaseOrder)
         {  
             try
