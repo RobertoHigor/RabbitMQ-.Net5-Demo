@@ -1,7 +1,6 @@
 ﻿using System;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitMQ.Client.MessagePatterns;
 
 namespace AccountsAuditConsumer.RabbitMQ
 {
@@ -37,18 +36,21 @@ namespace AccountsAuditConsumer.RabbitMQ
                     channel.QueueDeclare(AllQueueName, true, false, false, null);
                     channel.QueueBind(AllQueueName, ExchangeName, "payment.*");
 
-                    channel.BasicQos(0, 10, false);
-                    Subscription subscription = new Subscription(channel, AllQueueName, false);                    
+                    channel.BasicQos(0, 10, false);          
+                    var consumer = new EventingBasicConsumer(channel); 
 
-                    while (true)
+                    consumer.Received += (model, ea) => // suporta async
                     {
-                        BasicDeliverEventArgs deliveryArguments = subscription.Next();
-                        
-                        var message = deliveryArguments.Body.DeSerializeText();
-
+                        var body = ea.Body.ToArray();
+                        System.Console.WriteLine("DeSerializando a mensagem");
+                        var message = body.DeSerializeText();
+                        var routingKey = ea.RoutingKey;
                         Console.WriteLine("Message Received '{0}'", message);
-                        subscription.Ack(deliveryArguments);
-                    }
+                        channel.BasicAck(ea.DeliveryTag, false);
+                    };
+
+                    channel.BasicConsume(AllQueueName, autoAck: false, consumer);
+                    Console.ReadLine();                              
                 }
             }
         }
