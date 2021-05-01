@@ -1,7 +1,5 @@
 ﻿using System;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using RabbitMQ.Client.MessagePatterns;
 
 namespace PaymentCardConsumer.RabbitMQ
 {
@@ -43,21 +41,13 @@ namespace PaymentCardConsumer.RabbitMQ
                         "payment.cardpayment");
 
                     channel.BasicQos(0, 10, false);
-                    Subscription subscription = new Subscription(channel, 
-                        CardPaymentQueueName, false);
-                    
-                    while (true)
-                    {
-                        BasicDeliverEventArgs deliveryArguments = subscription.Next();
-
-                        var message = 
-                            (CardPayment)deliveryArguments.Body.DeSerialize(typeof(CardPayment));
-
-                        var routingKey = deliveryArguments.RoutingKey;
-
-                        Console.WriteLine("--- Payment - Routing Key <{0}> : {1} : {2}", routingKey, message.CardNumber, message.Amount);
-                        subscription.Ack(deliveryArguments);
-                    }
+                   
+                  
+                    // Alternativa a Subscribe que é depreciado.              
+                    // Criando override de DefaultBasicConsumer
+                   DefaultBasicConsumer subscription = new MessageConsumer(channel);             
+                    channel.BasicConsume(CardPaymentQueueName, autoAck: false, subscription); 
+                    Console.ReadLine();                                              
                 }
             }
         }
