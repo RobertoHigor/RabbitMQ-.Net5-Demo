@@ -22,9 +22,9 @@ namespace Payment_API.Controllers
 
                 client.Close();
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
 
             return Ok(reply);
