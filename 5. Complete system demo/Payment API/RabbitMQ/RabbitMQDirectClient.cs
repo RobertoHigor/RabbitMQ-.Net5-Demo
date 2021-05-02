@@ -47,12 +47,16 @@ namespace Payments.RabbitMQ
             //bool responseReceived = true;// Teste para esperar resposta, não recomendado
             // Alternativa utilizando pull api (não recomendada)    
             //https://www.rabbitmq.com/dotnet-api-guide.html
+            
             BasicGetResult result = null;
-            while (result == null)
+            while (result == null) // Recomendado TimeOut
             {
                 result = _channel.BasicGet(_replyQueueName, autoAck: false);
                  if (result != null)
-                {             
+                {          
+                    // Somente processar a resposta da mensagem enviada
+                    //http://www.matthiassommer.it/programming/remote-procedure-calls-with-rabbitmq/
+                    if (result.BasicProperties.CorrelationId != corrId) continue;   
                     var body = result.Body.ToArray();
                     authCode = Encoding.UTF8.GetString(body);
                     _channel.BasicAck(result.DeliveryTag, false);
